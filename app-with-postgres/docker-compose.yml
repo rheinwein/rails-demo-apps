@@ -1,5 +1,14 @@
+data:
+  image: postgres
+  volumes:
+    - /var/lib/postgresql
+
 db:
   image: postgres
+  volumes_from: 
+    - data
+  links:
+    - data
 
 web:
   build: .
@@ -8,6 +17,7 @@ web:
   volumes:
     - './:/var/app'
   working_dir: /var/app
+  #command: irb
   command: rails s -b '0.0.0.0'
   links:
-    - db
+    - db:db
